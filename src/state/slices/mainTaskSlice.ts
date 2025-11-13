@@ -80,4 +80,9 @@ export const selectTransformations = (state: RootState, id: number) =>
     state.mainTask.transformations[id].formulas
 export const selectFormulaByID = (state: RootState, id: number) =>
     state.mainTask.formulas[id]
+export const unistTest = (state: RootState, id: number) => {
+    const input = state.mainTask.formulas[id].formula;
+
+    return state.mainTask.formulas[id];
+}
 
