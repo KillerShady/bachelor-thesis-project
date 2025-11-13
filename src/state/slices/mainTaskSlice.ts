@@ -81,3 +81,4 @@ export const selectTransformations = (state: RootState, id: number) =>
 export const selectFormulaByID = (state: RootState, id: number) =>
     state.mainTask.formulas[id]
 
+
