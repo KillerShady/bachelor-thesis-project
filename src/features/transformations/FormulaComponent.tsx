@@ -12,7 +12,7 @@ import {
 } from "./transformationsSlice.ts";
 import {Button, DropdownButton, Form, InputGroup, OverlayTrigger, Tooltip, type TooltipProps} from "react-bootstrap";
 import ErrorFeedback from "./ErrorFeedback.tsx";
-import {faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faCheck, faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {InlineMath} from "react-katex";
 import {EquivalentTransformationsRecord} from "./EquivalentTransformationsRecord.tsx";
@@ -83,7 +83,7 @@ export default function FormulaComponent({ TransId, id }: { TransId: number; id:
                           disabled={isContextFormula || isCNF}
                           isValid={isValid}
                           isInvalid={isValid === undefined ? undefined : !isValid}
-                          onChange={(e) => dispatch(formulaModified({id: id, formula: e.target.value, operation: formula.operation}))}
+                          onChange={(e) => dispatch(formulaModified({id: id, formula: e.target.value, operation: formula.operation, prevFormula: formula.prevFormula}))}
             />
             {formula.operation === "Skolem" &&
              <Form.Control className="skolem-symbol-input"
@@ -101,8 +101,8 @@ export default function FormulaComponent({ TransId, id }: { TransId: number; id:
                         <span className="text-truncate">{EquivalentTransformationsRecord[formula.operation]?.name ?? formula.operation}</span>
                     </OverlayTrigger>
                                 }
-                                onSelect={(e) => dispatch(formulaModified({id: id, formula:formula.formula, operation: e}))}>
-                    {Object.keys(EquivalentTransformationsRecord).map((key) => <TransformationSelectionOption key={key} transKey={key} isLast={isFormulaLast} />)}
+                                onSelect={(e) => dispatch(formulaModified({id: id, formula:formula.formula, operation: e, prevFormula: formula.prevFormula}))}>
+                    {Object.keys(EquivalentTransformationsRecord).map((key) => <TransformationSelectionOption key={key} transKey={key} isLast={isFormulaLast} prepend={key === formula.operation ? <FontAwesomeIcon icon={faCheck} size="sm" /> : <span className="selection-icon"></span>} />)}
                 </DropdownButton>
 
             }
@@ -112,7 +112,7 @@ export default function FormulaComponent({ TransId, id }: { TransId: number; id:
                                     <>+<span className="step"> Step</span></>
                                 }
                                 onSelect={(e) => dispatch(formulaAdded({transformation: TransId, prevFormula:id, operation: e}))}>
-                    {Object.keys(EquivalentTransformationsRecord).map((key) => <TransformationSelectionOption key={key} transKey={key} isLast={isFormulaLast} />)}
+                    {Object.keys(EquivalentTransformationsRecord).map((key) => <TransformationSelectionOption key={key} transKey={key} isLast={isFormulaLast} prepend={<FontAwesomeIcon icon={faPlus} size="sm" />}/>)}
                 </DropdownButton>
             }
             <Button variant="outline-danger"
